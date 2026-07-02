@@ -1,0 +1,32 @@
+.git-local/
+.agents/
+.codex/
+
+# Catkin/ROS build outputs
+build/
+devel/
+install/
+log/
+logs/
+.catkin_tools/
+
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+
+# Editor and local files
+.vscode/
+*.swp
+*.swo
+*~
+
+# Runtime outputs and generated data
+*.bag
+*.db3
+*.log
+
+# Model checkpoints / weights
+*.pt
+*.pth
+
