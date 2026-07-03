@@ -31,7 +31,46 @@
   <node pkg="topic_tools" type="throttle" name="gt_vel_throttle" args="messages /CERLAB/quadcopter/vel_raw 30 /CERLAB/quadcopter/vel"/>
   <node pkg="topic_tools" type="throttle" name="gt_acc_throttle" args="messages /CERLAB/quadcopter/acc_raw 30 /CERLAB/quadcopter/acc"/>
   <node pkg="topic_tools" type="throttle" name="gt_odom_throttle" args="messages /CERLAB/quadcopter/odom_raw 30 /CERLAB/quadcopter/odom"/>
-  <node name="spawn_gazebo_model" pkg="gazebo_ros" type="spawn_model" args="-urdf -param robot_description -model quadcopter -x 11.0 -y 0.0 -z 0.1 -Y 0.0" respawn="false" />
+  <!-- <node name="spawn_gazebo_model" pkg="gazebo_ros" type="spawn_model" args="-urdf -param robot_description -model quadcopter -x 11.0 -y 0.0 -z 0.1 -Y 0.0" respawn="false" /> -->
+  <!-- <node name="spawn_gazebo_model" pkg="gazebo_ros" type="spawn_model" args="-urdf -param robot_description -model quadcopter -x 11.0 -y 0.0 -z 0.1 -Y 0.0" respawn="false" /> -->
+
+  <node name="spawn_gazebo_model" pkg="gazebo_ros" type="spawn_model" args="-urdf -param robot_description -model quadcopter -x 10.0 -y 0.0 -z 0.1 -Y 0.0" respawn="false" />
+  <!-- <node name="spawn_gazebo_model" pkg="gazebo_ros" type="spawn_model" args="-urdf -param robot_description -model quadcopter -x 12.0 -y 0.0 -z 0.1 -Y 3.14" respawn="false" /> -->
+  <!-- <node name="spawn_gazebo_model" pkg="gazebo_ros" type="spawn_model" args="-urdf -param robot_description -model quadcopter -x 11.0 -y 1.0 -z 0.1 -Y -1.57" respawn="false" /> -->
+  <!-- <node name="spawn_gazebo_model" pkg="gazebo_ros" type="spawn_model" args="-urdf -param robot_description -model quadcopter -x 11.0 -y -1.0 -z 0.1 -Y 1.57" respawn="false" /> -->
+
+  <!-- <node name="spawn_gazebo_model" pkg="gazebo_ros" type="spawn_model" args="-urdf -param robot_description -model quadcopter -x 9.5 -y 1.5 -z 0.1 -Y -0.78" respawn="false" /> -->
+  <!-- <node name="spawn_gazebo_model" pkg="gazebo_ros" type="spawn_model" args="-urdf -param robot_description -model quadcopter -x 9.5 -y -1.5 -z 0.1 -Y 0.78" respawn="false" /> -->
+  <!-- <node name="spawn_gazebo_model" pkg="gazebo_ros" type="spawn_model" args="-urdf -param robot_description -model quadcopter -x 12.5 -y 1.5 -z 0.1 -Y -2.36" respawn="false" /> -->
+  <!-- <node name="spawn_gazebo_model" pkg="gazebo_ros" type="spawn_model" args="-urdf -param robot_description -model quadcopter -x 12.5 -y -1.5 -z 0.1 -Y 2.36" respawn="false" /> -->
+
+  <!-- <node name="spawn_gazebo_model" pkg="gazebo_ros" type="spawn_model" args="-urdf -param robot_description -model quadcopter -x 9.0 -y 0.0 -z 0.1 -Y 0.0" respawn="false" /> -->
+  <!-- <node name="spawn_gazebo_model" pkg="gazebo_ros" type="spawn_model" args="-urdf -param robot_description -model quadcopter -x 13.0 -y 0.0 -z 0.1 -Y 3.14" respawn="false" /> -->
+  <!-- <node name="spawn_gazebo_model" pkg="gazebo_ros" type="spawn_model" args="-urdf -param robot_description -model quadcopter -x 11.0 -y 2.0 -z 0.1 -Y -1.57" respawn="false" /> -->
+  <!-- <node name="spawn_gazebo_model" pkg="gazebo_ros" type="spawn_model" args="-urdf -param robot_description -model quadcopter -x 11.0 -y -2.0 -z 0.1 -Y 1.57" respawn="false" /> -->
+
+  <!-- <node name="spawn_gazebo_model" pkg="gazebo_ros" type="spawn_model" args="-urdf -param robot_description -model quadcopter -x 9.0 -y 2.0 -z 0.1 -Y -0.78" respawn="false" /> -->
+  <!-- <node name="spawn_gazebo_model" pkg="gazebo_ros" type="spawn_model" args="-urdf -param robot_description -model quadcopter -x 9.0 -y -2.0 -z 0.1 -Y 0.78" respawn="false" /> -->
+  <!-- <node name="spawn_gazebo_model" pkg="gazebo_ros" type="spawn_model" args="-urdf -param robot_description -model quadcopter -x 13.0 -y 2.0 -z 0.1 -Y -2.36" respawn="false" /> -->
+  <!-- <node name="spawn_gazebo_model" pkg="gazebo_ros" type="spawn_model" args="-urdf -param robot_description -model quadcopter -x 13.0 -y -2.0 -z 0.1 -Y 2.36" respawn="false" /> -->
+
+  <!-- <node name="spawn_gazebo_model" pkg="gazebo_ros" type="spawn_model" args="-urdf -param robot_description -model quadcopter -x 8.5 -y 0.0 -z 0.1 -Y 0.0" respawn="false" /> -->
+  <!-- <node name="spawn_gazebo_model" pkg="gazebo_ros" type="spawn_model" args="-urdf -param robot_description -model quadcopter -x 13.5 -y 0.0 -z 0.1 -Y 3.14" respawn="false" /> -->
+  <!-- <node name="spawn_gazebo_model" pkg="gazebo_ros" type="spawn_model" args="-urdf -param robot_description -model quadcopter -x 11.0 -y 2.5 -z 0.1 -Y -1.57" respawn="false" /> -->
+  <!-- <node name="spawn_gazebo_model" pkg="gazebo_ros" type="spawn_model" args="-urdf -param robot_description -model quadcopter -x 11.0 -y -2.5 -z 0.1 -Y 1.57" respawn="false" /> -->
+
+  <!-- <node name="spawn_gazebo_model" pkg="gazebo_ros" type="spawn_model" args="-urdf -param robot_description -model quadcopter -x 8.5 -y 2.5 -z 0.1 -Y -0.78" respawn="false" /> -->
+  <!-- <node name="spawn_gazebo_model" pkg="gazebo_ros" type="spawn_model" args="-urdf -param robot_description -model quadcopter -x 8.5 -y -2.5 -z 0.1 -Y 0.78" respawn="false" /> -->
+  <!-- <node name="spawn_gazebo_model" pkg="gazebo_ros" type="spawn_model" args="-urdf -param robot_description -model quadcopter -x 13.5 -y 2.5 -z 0.1 -Y -2.36" respawn="false" /> -->
+  <!-- <node name="spawn_gazebo_model" pkg="gazebo_ros" type="spawn_model" args="-urdf -param robot_description -model quadcopter -x 13.5 -y -2.5 -z 0.1 -Y 2.36" respawn="false" /> -->
+
+  <!-- <node name="spawn_gazebo_model" pkg="gazebo_ros" type="spawn_model" args="-urdf -param robot_description -model quadcopter -x 10.0 -y 3.0 -z 0.1 -Y -1.2" respawn="false" /> -->
+  <!-- <node name="spawn_gazebo_model" pkg="gazebo_ros" type="spawn_model" args="-urdf -param robot_description -model quadcopter -x 10.0 -y -3.0 -z 0.1 -Y 1.2" respawn="false" /> -->
+  <!-- <node name="spawn_gazebo_model" pkg="gazebo_ros" type="spawn_model" args="-urdf -param robot_description -model quadcopter -x 12.0 -y 3.0 -z 0.1 -Y -1.94" respawn="false" /> -->
+  <!-- <node name="spawn_gazebo_model" pkg="gazebo_ros" type="spawn_model" args="-urdf -param robot_description -model quadcopter -x 12.0 -y -3.0 -z 0.1 -Y 1.94" respawn="false" /> -->
+  <!-- <node name="spawn_gazebo_model" pkg="gazebo_ros" type="spawn_model" args="-urdf -param robot_description -model quadcopter -x 11.0 -y 3.5 -z 0.1 -Y -1.57" respawn="false" /> -->
+  <!-- <node name="spawn_gazebo_model" pkg="gazebo_ros" type="spawn_model" args="-urdf -param robot_description -model quadcopter -x 11.0 -y -3.5 -z 0.1 -Y 1.57" respawn="false" /> -->
+  
 
   <!-- TF -->
   <include file="$(find uav_simulator)/launch/setupTF.launch" >

@@ -82,10 +82,25 @@ class Navigation:
         self.rollout_traj_pub = rospy.Publisher("/rollout_traj", Path, queue_size=10)
         self.dynamic_obstacle_vis_pub = rospy.Publisher("/rl_navigation/in_range_dynamic_obstacles", MarkerArray, queue_size=10)
 
-        self.flight_path_pub = rospy.Publisher("/flight_path", Path, queue_size=10, latch=True)
-        self.flight_path_msg = Path()
-        self.flight_path_msg.header.frame_id = "map"
+        self.flight_path_group_size = 10  # 每 10 条轨迹显示在一个 MarkerArray topic 上
+        self.flight_path_traj_count = 0
+        self.flight_path_marker_pubs = {}
+        self.flight_path_marker_groups = {}
+        self.current_flight_path_marker = None
+        self.current_flight_path_group_id = None
         self.flight_path_min_dist = 0.05  # 每隔 5cm 记录一个点
+        self.flight_path_colors = [
+            (1.0, 0.0, 0.0),
+            (0.0, 0.7, 1.0),
+            (0.0, 0.9, 0.2),
+            (1.0, 0.7, 0.0),
+            (0.8, 0.2, 1.0),
+            (1.0, 0.2, 0.6),
+            (0.2, 1.0, 0.8),
+            (0.9, 0.9, 0.1),
+            (0.4, 0.4, 1.0),
+            (1.0, 0.5, 0.2),
+        ]
 
         if (not self.use_policy_server):
             self.policy = self.init_model()
@@ -290,10 +305,58 @@ class Navigation:
         self.collision_detected = False
         self.mission_success = False
 
-        # 新任务开始时保留历史轨迹，让 /flight_path 持续显示完整飞行记录
-        self.flight_path_msg.header.frame_id = "map"
-        self.flight_path_msg.header.stamp = rospy.Time.now()
-        self.flight_path_pub.publish(self.flight_path_msg)
+        self.start_new_flight_path_marker()
+
+    def start_new_flight_path_marker(self):
+        traj_id = self.flight_path_traj_count
+        group_id = traj_id // self.flight_path_group_size
+
+        if group_id not in self.flight_path_marker_pubs:
+            topic = "/flight_paths_map_{}".format(group_id)
+            self.flight_path_marker_pubs[group_id] = rospy.Publisher(topic, MarkerArray, queue_size=10, latch=True)
+            self.flight_path_marker_groups[group_id] = MarkerArray()
+
+        marker = Marker()
+        marker.header.frame_id = "map"
+        marker.header.stamp = rospy.Time.now()
+        marker.ns = "flight_path"
+        marker.id = traj_id % self.flight_path_group_size
+        marker.type = Marker.LINE_STRIP
+        marker.action = Marker.ADD
+        marker.pose.orientation.w = 1.0
+        marker.scale.x = 0.04
+
+        color = self.flight_path_colors[traj_id % len(self.flight_path_colors)]
+        marker.color.r = color[0]
+        marker.color.g = color[1]
+        marker.color.b = color[2]
+        marker.color.a = 1.0
+
+        self.flight_path_marker_groups[group_id].markers.append(marker)
+        self.current_flight_path_marker = marker
+        self.current_flight_path_group_id = group_id
+        self.flight_path_traj_count += 1
+        self.flight_path_marker_pubs[group_id].publish(self.flight_path_marker_groups[group_id])
+
+    def publish_current_flight_path_point(self):
+        if self.current_flight_path_marker is None:
+            return
+
+        curr = self.odom.pose.pose.position
+        point = Point(curr.x, curr.y, curr.z)
+
+        if len(self.current_flight_path_marker.points) == 0:
+            self.current_flight_path_marker.points.append(point)
+        else:
+            last = self.current_flight_path_marker.points[-1]
+            dist = np.linalg.norm([point.x - last.x, point.y - last.y, point.z - last.z])
+            if dist <= self.flight_path_min_dist:
+                return
+            self.current_flight_path_marker.points.append(point)
+
+        group_id = self.current_flight_path_group_id
+        self.current_flight_path_marker.header.stamp = rospy.Time.now()
+        self.flight_path_marker_pubs[group_id].publish(self.flight_path_marker_groups[group_id])
 
     def quaternion_to_rotation_matrix(self, quaternion):
         # w, x, y, z = quaternion
@@ -692,23 +755,8 @@ class Navigation:
         self.action_pub.publish(final_cmd_vel)
         self.has_action = True
 
-        # 发布实际飞行历史轨迹
-        path_pose = PoseStamped()
-        path_pose.header.stamp = rospy.Time.now()
-        path_pose.header.frame_id = "map"
-        path_pose.pose = self.odom.pose.pose
-
-        if len(self.flight_path_msg.poses) == 0:
-            self.flight_path_msg.poses.append(path_pose)
-        else:
-            last = self.flight_path_msg.poses[-1].pose.position
-            curr = path_pose.pose.position
-            dist = np.linalg.norm([curr.x - last.x, curr.y - last.y, curr.z - last.z])
-            if dist > self.flight_path_min_dist:
-                self.flight_path_msg.poses.append(path_pose)
-
-        self.flight_path_msg.header.stamp = rospy.Time.now()
-        self.flight_path_pub.publish(self.flight_path_msg)
+        # 发布实际飞行历史轨迹：每 10 条轨迹分到一个 MarkerArray topic
+        self.publish_current_flight_path_point()
 
         # rollout_traj = self.get_rollout_traj(pos, vel_world, goal, dt=0.1, horizon=3.0)
         # traj_msg = Path()
